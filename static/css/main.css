@@ -439,6 +439,10 @@ h1, h2 {
 .right .pagination .page-item.active .page-link {
   background-color: #40a45b !important;
   border-color: #40a45b;
+  color: white;
+}
+.right .pagination .page-item.disabled .page-link {
+  color: #808080;
 }
 .right h1 {
   color: #40a45b;
