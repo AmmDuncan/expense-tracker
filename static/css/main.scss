@@ -523,10 +523,14 @@ h1, h2 {
   padding-top: 16px;
 
   .pagination {
-    .page-item.active {
-      .page-link {
-        background-color: $color-primary !important;
-        border-color: $color-primary;
+    .page-item {
+      color: $color-primary;
+
+      &.active {
+        .page-link {
+          background-color: $color-primary !important;
+          border-color: $color-primary;
+        }
       }
     }
   }
