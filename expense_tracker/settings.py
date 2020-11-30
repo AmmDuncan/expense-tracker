@@ -33,9 +33,9 @@ else:
 # DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ['amd-expense.herokuapp.com', '127.0.0.1']
+    ALLOWED_HOSTS = ['finsense.herokuapp.com', '127.0.0.1']
 else:
-    ALLOWED_HOSTS = ['amd-expense.herokuapp.com']
+    ALLOWED_HOSTS = ['finsense.herokuapp.com']
 
 # Application definition
 
