@@ -524,8 +524,9 @@ h1, h2 {
 
   .pagination {
     .page-item {
-      color: $color-primary;
-
+      .page-link {
+        color: $color-primary;
+      }
       &.active {
         .page-link {
           background-color: $color-primary !important;

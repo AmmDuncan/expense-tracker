@@ -433,7 +433,7 @@ h1, h2 {
 .right {
   padding-top: 16px;
 }
-.right .pagination .page-item {
+.right .pagination .page-item .page-link {
   color: #40a45b;
 }
 .right .pagination .page-item.active .page-link {
