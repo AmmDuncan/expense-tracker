@@ -26,8 +26,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY',
 # SECRET_KEY = "THEBOYAMMIEL21"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ['finsense.herokuapp.com', '127.0.0.1']
