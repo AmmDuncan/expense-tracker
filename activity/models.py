@@ -21,9 +21,12 @@ class Budget(models.Model):
             .get('amount__sum')
 
     def total_income(self):
-        return self.activities.filter(type='income')\
-            .aggregate(Sum('amount'))\
-            .get('amount__sum') + self.income
+        incomes = 0
+        if len(self.activities.filter(type='income')) > 0:
+            incomes = self.activities.filter(type='income') \
+                .aggregate(Sum('amount')) \
+                .get('amount__sum')
+        return incomes + self.income
 
     def __str__(self):
         return f"{self.date.strftime('%B')} budget of {self.user.username}"

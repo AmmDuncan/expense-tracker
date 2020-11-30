@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
 from .models import Budget, Activity
 from .forms import BudgetForm, ActivityForm
@@ -20,9 +21,18 @@ def home(request):
     current_month = timezone.datetime(year=timezone.now().year,
                                       month=timezone.now().month,
                                       day=1)
-
+    page_num = request.GET.get('page')
     budget = Budget.objects.get_or_create(date=current_month, user=user)[0]
     records = budget.activities.all().order_by('-date')
+    paginator = Paginator(records, 10)
+
+    try:
+        records = paginator.page(page_num)
+    except PageNotAnInteger:
+        records = paginator.page(1)
+    except EmptyPage:
+        records = paginator.page(paginator.num_pages)
+
     form = ActivityForm(request)
 
     if request.method == 'POST':

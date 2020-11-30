@@ -522,6 +522,15 @@ h1, h2 {
 .right {
   padding-top: 16px;
 
+  .pagination {
+    .page-item.active {
+      .page-link {
+        background-color: $color-primary !important;
+        border-color: $color-primary;
+      }
+    }
+  }
+
   h1 {
     color: $color-primary
   }
@@ -686,3 +695,6 @@ main {
   max-width: 480px;
 }
 }
+
+
+

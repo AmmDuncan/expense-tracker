@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save, post_delete
 from django.core.signals import request_finished
 from django.utils import timezone
+from datetime import timedelta
 from django.dispatch import receiver
 from .models import Activity, Budget
 from django.db.models import Sum
@@ -11,6 +12,15 @@ def cash_balance_signal(sender, instance, **kwargs):
     current_month = timezone.datetime(year=instance.date.year,
                                       month=instance.date.month,
                                       day=1)
+    last_month = current_month - timedelta(weeks=4)
+    prev_balance = 0
+    try:
+        prev_budget = Budget.objects.prefetch_related('activities').get(
+            date=last_month, user=user)
+        prev_balance = prev_budget.balance
+    except Budget.DoesNotExist:
+        prev_budget = None
+
     budget = Budget.objects.prefetch_related('activities') \
         .get_or_create(date=current_month, user=user)[0]
 
@@ -32,9 +42,9 @@ def cash_balance_signal(sender, instance, **kwargs):
     if budget.income:
         budget.balance = (budget.income -
                           budget.savings -
-                          expenses + income)
+                          expenses + income + prev_balance)
     else:
-        budget.balance = 0 - expenses + income - budget.savings
+        budget.balance = 0 - expenses + income - budget.savings + prev_balance
 
     budget.save()
 

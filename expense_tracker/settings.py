@@ -26,11 +26,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY',
 # SECRET_KEY = "THEBOYAMMIEL21"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('DEBUG'):
-    DEBUG = eval(os.environ.get('DEBUG'))
-else:
-    DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ['finsense.herokuapp.com', '127.0.0.1']
@@ -99,19 +96,23 @@ PASSWORD = os.environ.get('DATABASE_PASSWORD')
 os.environ.get('')
 
 if DEBUG:
-    DB_NAME = BASE_DIR / "db.sqlite3"
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': ENGINE,
-        'NAME': DB_NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': '5432'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': ENGINE,
+            'NAME': DB_NAME,
+            'USER': USER,
+            'PASSWORD': PASSWORD,
+            'HOST': HOST,
+            'PORT': '5432'
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
