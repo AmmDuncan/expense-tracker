@@ -49,6 +49,7 @@ def home(request):
                       'budget': budget,
                       'form': form,
                       'records': records,
+                      'paginator': paginator,
                   })
 
 
