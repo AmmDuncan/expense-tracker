@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block main %}
+<main class="px-3 px-md-0">
+
+    <div class="container p-xs-1 p-sm-3">
+      <section class="hero row">
+        <div class="hero__text col-lg-7 col">
+          <div>
+            <h1 class="hero__text--main" id="typing"></h1>
+            <p class="hero__text--sec pr-lg-5 mr-lg-5">
+              Track your monthly inflow and outflow of cash to be able to take effective financial decisions
+            </p>
+            <div class="cta mt-5 mt-sm-0">
+              <a href="{% url 'users:login' %}" class="btn hero__btn hero__btn--primary">Sign in</a>
+              <a href="{% url 'users:register' %}"  class="btn hero__btn hero__btn--empty">Register</a>
+            </div>
+
+          </div>
+        </div>
+        <div class="hero__img col d-lg-block d-none">
+          <img src="{% static 'img/money.png' %}" class="hero__img--pic" alt="money bag">
+        </div>
+      </section>
+    </div>
+</main>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

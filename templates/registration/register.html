@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Sign In
+{% endblock %}
+
+{% block main %}
+    <main class="login-page">
+
+        <form class="sign register" method="post">
+            <div class="form-group" id="register-heading"><h2>Register</h2></div>
+            {% csrf_token %}
+            {% crispy form %}
+{#          <div class="form-group">#}
+{#              <button type="submit" class="btn btn-primary">Log in</button>#}
+{#          </div>#}
+            <div class="bg"></div>
+        </form>
+    </main>
+{% endblock %}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% load static %}
+{% load money %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<main class="px-3 px-md-0">
+
+    <div class="container-lg p-1">
+        <div class="top row">
+            <div class="col-md-6 col-lg-4 mt-3">
+{#            <div class="hang">#}
+                <div class="budget border row ">
+                <div class="wrap">
+                    <h3 class="display-5">{{ budget.date|date:'M' }}</h3> <span class="dot">&bull;</span>
+                    <h3 class="display-5">{{ budget.date|date:'Y' }}</h3>
+                    <a href="{% url 'activity:update-name' budget.id %}" class="btn btn-light to-right">Update <br>Budget</a>
+                </div>
+                <div class="row budget__summary">
+                    <div class="col-12 budget__summary--detail tot-expenses">
+                        <h5 >Expenses:</h5>
+                        <p >{% if budget.total_expenses %}{{ budget.total_expenses|floatformat:2|intcomma|currency|safe }} {% else %} 0.00 {% endif %}</p>
+                    </div>
+                    <div class="col-12 others row">
+                        <div class=" col-4 budget__summary--detail">
+                            <h5>Income:</h5>
+                            <p>{% if budget.total_income %}{{ budget.total_income|floatformat:2|intcomma|currency|safe|default:'Not set' }}{% else %}{{ ""|currency|safe }}Not set{% endif %}</p>
+                        </div>
+                        <div class=" col-4 budget__summary--detail">
+                            <h5>Savings:</h5>
+                            <p>{{ budget.savings|floatformat:2|intcomma|currency|safe }}</p>
+                        </div>
+                        <div class="col-4 budget__summary--detail">
+                        <h5>Balance:</h5>
+                        <p>{% if budget.balance %}{{ budget.balance|floatformat:2|intcomma|currency|safe }}{% else %}{{ ""|currency|safe }}Not set{% endif %}</p>
+                    </div>
+                    </div>
+                </div>
+        </div>
+                <div class="expense-form border mt-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% crispy form %}
+                    </form>
+                </div>
+{#            </div>#}
+            </div>
+
+            <div class="col mt-3 record-wrap">
+                <div class="right">
+                <h1>RECORDS</h1>
+                {% if records %}
+                    {% for record in records %}
+                    <div class="record  row {{ record.type }}" >
+                        <div class="col-7 col-md-7">
+                            <div class="title">
+                                {{ record.title }}
+                            </div>
+
+                            <div class="date mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#666666"><path d="M43,7.16667v14.33333h-7.16667c-7.88333,0 -14.33333,6.45 -14.33333,14.33333v100.33333c0,7.88333 6.45,14.33333 14.33333,14.33333h100.33333c7.88333,0 14.33333,-6.45 14.33333,-14.33333v-100.33333c0,-7.88333 -6.45,-14.33333 -14.33333,-14.33333h-7.16667v-14.33333h-14.33333v14.33333h-57.33333v-14.33333zM35.83333,57.33333h100.33333v78.83333h-100.33333z"></path></g></g></svg>
+                                {{ record.date |date:'l, jS' }}
+                            </div>
+                        </div>
+                        <div class="col-3 col-md-3 amount">
+                            {{ record.amount|floatformat:2|intcomma|currency|safe }}
+                        </div>
+                        <div class="col-2 del"  data-id="{{ record.id }}">
+                                <a class="" data-toggle="modal" data-target="#deleteModal"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="28" height="28"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#95a5a6" id="icon-filler"><path d="M71.66667,14.33333l-7.16667,7.16667h-28.66667c-3.956,0 -7.16667,3.21067 -7.16667,7.16667c0,3.956 3.21067,7.16667 7.16667,7.16667h100.33333c3.956,0 7.16667,-3.21067 7.16667,-7.16667c0,-3.956 -3.21067,-7.16667 -7.16667,-7.16667h-28.66667l-7.16667,-7.16667zM35.83333,50.16667v93.16667c0,7.88333 6.45,14.33333 14.33333,14.33333h71.66667c7.88333,0 14.33333,-6.45 14.33333,-14.33333v-93.16667zM67.43945,74.63411c1.82929,0 3.65914,0.6917 5.05306,2.08561l13.50749,13.50749l13.50749,-13.50749c2.78783,-2.78783 7.31828,-2.78783 10.10612,0c2.78783,2.78783 2.78783,7.31828 0,10.10612l-13.50749,13.50749l13.50749,13.50749c2.78783,2.78783 2.78783,7.31828 0,10.10612c-2.78783,2.78783 -7.31828,2.78783 -10.10612,0l-13.50749,-13.50749l-13.50749,13.50749c-2.78783,2.78783 -7.31828,2.78783 -10.10612,0c-2.78783,-2.78783 -2.78783,-7.31828 0,-10.10612l13.50749,-13.50749l-13.50749,-13.50749c-2.78783,-2.78783 -2.78783,-7.31828 0,-10.10612c1.39392,-1.39392 3.22377,-2.08561 5.05306,-2.08561z"></path></g></g></svg></a>
+
+                        </div>
+                        </div>
+                    {% endfor %}
+
+                    {% else %}
+                    <div>No Records Yet</div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete:</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-danger" data-id="" >Yes, Delete</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+   const modalBody = document.querySelector('.modal-body')
+    const modalDeleteBtn= document.querySelector('.modal .btn-danger')
+
+    let delBtns = document.querySelectorAll('.del a')
+    delBtns.forEach(btn=>{
+        btn.addEventListener('click', (e)=>{
+            e.preventDefault()
+            modalBody.innerHTML = '<em>' + btn.parentElement.parentElement.querySelector('.title').innerText + '</em><br>'+  `<span class="date"> posted ${btn.parentElement.parentElement.querySelector('.date').innerText}? </span>`
+            console.log(btn.parentElement.parentElement.querySelector('.title').innerText)
+            modalDeleteBtn.dataset.id = btn.parentElement.dataset.id
+
+            modalDeleteBtn.addEventListener('click', ()=> {
+                fetch('{% url 'activity:delete' 1 %}'.replace('/1', `/${modalDeleteBtn.dataset.id}`))
+                {#.then(()=>window.location = document.URL);#}
+                .then(data=> window.location.href = data.url)
+            })
+        })
+    })
+    </script>
+
+{% endblock %}
