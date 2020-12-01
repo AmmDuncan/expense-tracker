@@ -24,8 +24,12 @@ def home(request):
                                       day=1)
     page_num = request.GET.get('page')
     prev_balance = get_prev_month_budget_balance(current_month, user)
-    budget = Budget.objects.get_or_create(date=current_month, user=user,
-                                          balance=prev_balance)[0]
+    budget, created = Budget.objects.get_or_create(date=current_month,
+                                                   user=user)
+    if created:
+        budget.balance = prev_balance
+        budget.save()
+
     records = budget.activities.all().order_by('-date')
     paginator = Paginator(records, 10)
 
