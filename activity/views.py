@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
-from .signals import update_balance
+from .utils import get_prev_month_budget_balance
 from .models import Budget, Activity
 from .forms import BudgetForm, ActivityForm
 
@@ -23,8 +23,9 @@ def home(request):
                                       month=timezone.now().month,
                                       day=1)
     page_num = request.GET.get('page')
-    budget = Budget.objects.get_or_create(date=current_month, user=user)[0]
-    update_balance.send(Budget, instance=budget)
+    prev_balance = get_prev_month_budget_balance(current_month, user)
+    budget = Budget.objects.get_or_create(date=current_month, user=user,
+                                          balance=prev_balance)[0]
     records = budget.activities.all().order_by('-date')
     paginator = Paginator(records, 10)
 
