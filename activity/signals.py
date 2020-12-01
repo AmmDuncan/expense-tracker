@@ -3,6 +3,7 @@ from django.core.signals import request_finished
 from django.utils import timezone
 from datetime import timedelta
 from django.dispatch import receiver
+from django import dispatch
 from .models import Activity, Budget
 from django.db.models import Sum
 
@@ -57,3 +58,8 @@ def cash_balance_save_signal(sender, instance, **kwargs):
 @receiver(post_delete, sender=Activity)
 def cash_balance_delete_signal(sender, instance, **kwargs):
     cash_balance_signal(sender, instance, **kwargs)
+
+
+update_balance = dispatch.Signal(providing_args=['instance'])
+
+update_balance.connect(cash_balance_signal, sender=Budget)
